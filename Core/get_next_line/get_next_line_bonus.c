@@ -1,83 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mirosole <mirosole@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 15:34:23 by aleksejmiro       #+#    #+#             */
-/*   Updated: 2026/09/08 17:00:07 by mirosole         ###   ########.fr       */
+/*   Updated: 2026/09/08 14:59:02 by mirosole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-static char *resize_stash(char *stash, size_t used, size_t *capacity)
+static char	*resize_stash(char *stash, size_t used, size_t *capacity)
 {
 	char	*new_stash;
 
-	if(*capacity < 64)
+	if (*capacity < 64)
 		*capacity = 64;
 	new_stash = malloc(*capacity);
-	if(new_stash == NULL)
+	if (new_stash == NULL)
 	{
 		free(stash);
 		return (NULL);
 	}
-	if(stash != NULL)
+	if (stash != NULL)
 		ft_memcpy(new_stash, stash, used);
 	free(stash);
 	new_stash[used] = '\0';
 	return (new_stash);
 }
 
-static int	read_chunk(int fd, char **stash, size_t *used, size_t *capacity)
+static int	read_chunk(int fd, char **stash,
+		size_t *used, size_t *capacity)
 {
 	ssize_t	bytes_read;
-	if(*used + 1 + BUFFER_SIZE > *capacity)
+
+	if (*used + BUFFER_SIZE + 1 > *capacity)
 	{
 		*capacity *= 2;
 		*stash = resize_stash(*stash, *used, capacity);
-		if(stash == NULL)
-			return -1;
+		if (*stash == NULL)
+			return (-1);
 	}
 	bytes_read = read(fd, *stash + *used, BUFFER_SIZE);
-	if(bytes_read < 0)
+	if (bytes_read < 0)
 	{
 		free(*stash);
 		*stash = NULL;
 		return (-1);
 	}
-	if(bytes_read == 0)
+	if (bytes_read == 0)
 		return (0);
 	*used += bytes_read;
 	(*stash)[*used] = '\0';
 	return (1);
 }
 
-char	*read_to_stash(int fd, char *stash)
+static char	*read_to_stash(int fd, char *stash)
 {
-	size_t	capacity;
 	size_t	used;
+	size_t	capacity;
 	int		status;
 
-	if(stash != NULL && ft_strchr(stash, '\n') != NULL)
-		return stash;
+	if (stash != NULL && ft_strchr(stash, '\n') != NULL)
+		return (stash);
 	used = 0;
-	if(stash != NULL){
+	if (stash != NULL)
 		used = ft_strlen(stash);
-	}
 	capacity = used + BUFFER_SIZE + 1;
 	stash = resize_stash(stash, used, &capacity);
-	if(stash == NULL)
+	if (stash == NULL)
 		return (NULL);
-	while(ft_strchr(stash, '\n') == NULL)
+	while (ft_strchr(stash, '\n') == NULL)
 	{
 		status = read_chunk(fd, &stash, &used, &capacity);
-		if(status <= 0)
-			break;
+		if (status <= 0)
+			break ;
 	}
-	if(status < 0)
+	if (status < 0)
 		return (NULL);
 	return (stash);
 }
@@ -85,8 +86,8 @@ char	*read_to_stash(int fd, char *stash)
 static char	*gnl_core(int fd, char **stash)
 {
 	char	*line;
-	char	*tmp;
 	char	*newline;
+	char	*tmp;
 
 	*stash = read_to_stash(fd, *stash);
 	if (*stash == NULL || (*stash)[0] == '\0')
@@ -111,7 +112,9 @@ static char	*gnl_core(int fd, char **stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[MAX_FD];
 
-	return (gnl_core(fd, &stash));
+	if (fd < 0 || fd >= MAX_FD)
+		return (NULL);
+	return (gnl_core(fd, &stash[fd]));
 }
