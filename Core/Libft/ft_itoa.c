@@ -1,45 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/25 13:39:19 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/08/28 11:52:54 by olmirosh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-static size_t	number_len(long number)
+static size_t	ft_numlen(long n)
 {
 	size_t	len;
 
-	len = 1;
-	if (number < 0)
+	len = 0;
+	if (n <= 0)
+		len = 1;
+	while (n != 0)
 	{
 		len++;
-		number = -number;
-	}
-	while (number >= 10)
-	{
-		number /= 10;
-		len++;
+		n /= 10;
 	}
 	return (len);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*new;
+	char	*result;
 	long	number;
 	size_t	len;
 
 	number = n;
-	len = number_len(number);
-	new = malloc(len + 1);
-	if (new == NULL)
+	len = ft_numlen(number);
+	result = malloc(len + 1);
+	if (result == NULL)
 		return (NULL);
-	new[len] = '\0';
+	result[len] = '\0';
+	if (number < 0)
+		result[0] = '-';
 	if (number < 0)
 		number = -number;
-	while (len > 0 && new[len - 1] != '-')
+	if (number == 0)
+		result[0] = '0';
+	while (number > 0)
 	{
-		new[--len] = (char)(number % 10 + '0');
+		result[--len] = number % 10 + '0';
 		number /= 10;
-		if (number == 0)
-			break ;
 	}
-	if (n < 0)
-		new[0] = '-';
-	return (new);
+	return (result);
 }
