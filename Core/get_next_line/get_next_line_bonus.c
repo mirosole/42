@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mirosole <mirosole@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/04 15:34:23 by aleksejmiro       #+#    #+#             */
-/*   Updated: 2026/09/08 14:59:02 by mirosole         ###   ########.fr       */
+/*   Created: 2026/09/11 14:04:22 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/11 14:06:17 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

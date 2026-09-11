@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aleksejmirosnicenko <aleksejmirosnicenk    +#+  +:+       +#+        */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/04 15:34:28 by aleksejmiro       #+#    #+#             */
-/*   Updated: 2026/09/04 16:29:41 by aleksejmiro      ###   ########.fr       */
+/*   Updated: 2026/09/11 14:04:42 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
