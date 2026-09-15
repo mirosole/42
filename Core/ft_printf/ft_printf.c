@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mirosole <mirosole@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/10 20:58:27 by mirosole          #+#    #+#             */
-/*   Updated: 2026/09/11 17:52:17 by olmirosh         ###   ########.fr       */
+/*   Updated: 2026/09/12 18:54:40 by mirosole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,15 +134,4 @@ int ft_print_pointer(void *ptr)
 	len += ft_print_str("0x");
 	len += ft_print_hex((unsigned long)ptr, "0123456789abcdef");
 	return (len);
-}
-
-int	main(void)
-{
-	ft_printf("decimal: %d\n", 255);
-	ft_printf("hex: %x\n", 255);
-	ft_printf("HEX: %X\n", 255);
-	ft_printf("zero: %x\n", 0);
-	ft_printf("ten: %x\n", 10);
-	ft_printf("sixteen: %x\n", 16);
-	return (0);
 }
