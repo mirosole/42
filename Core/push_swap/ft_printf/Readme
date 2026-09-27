@@ -1,0 +1,176 @@
+*This project has been created as part of the 42 curriculum by olmirosh.*
+
+# ft_printf
+
+## Description
+
+ft_printf is a custom implementation of the standard C `printf` function.
+
+The goal of the project is to understand variadic functions in C and to work with
+`va_list`, `va_start`, `va_arg`, and `va_end`.
+
+The function supports the following conversions:
+
+- `%c` — character
+- `%s` — string
+- `%p` — pointer
+- `%d` — signed decimal integer
+- `%i` — signed integer
+- `%u` — unsigned decimal integer
+- `%x` — hexadecimal lowercase
+- `%X` — hexadecimal uppercase
+- `%%` — percent sign
+
+The project produces a static library named:
+
+```text
+libftprintf.a
+```
+
+## Library Description
+
+The main function is:
+
+```c
+int ft_printf(const char *format, ...);
+```
+
+The function reads the format string character by character.
+
+Normal characters are written directly to standard output.
+
+When a `%` character is found, the next character determines which argument type
+must be read using `va_arg`.
+
+The project contains helper functions for:
+
+- printing characters;
+- printing strings;
+- printing signed integers;
+- printing unsigned integers;
+- printing hexadecimal numbers;
+- printing pointer addresses.
+
+Each printing function returns the number of characters written so that
+`ft_printf` can return the total output length.
+
+## Instructions
+
+### Compilation
+
+Run:
+
+```bash
+make
+```
+
+This creates:
+
+```text
+libftprintf.a
+```
+
+### Makefile commands
+
+```bash
+make
+make clean
+make fclean
+make re
+```
+
+### Using the library
+
+Include:
+
+```c
+#include "ft_printf.h"
+```
+
+Example:
+
+```c
+#include "ft_printf.h"
+
+int main(void)
+{
+    ft_printf("Hello %s, number = %d\n", "world", 42);
+    return (0);
+}
+```
+
+Compile:
+
+```bash
+cc main.c libftprintf.a -o program
+```
+
+Run:
+
+```bash
+./program
+```
+
+## Implementation
+
+The implementation uses C variadic arguments.
+
+```c
+va_list args;
+va_start(args, format);
+```
+
+When a conversion is found, the corresponding value is read with `va_arg`.
+
+For example:
+
+```c
+va_arg(args, int)
+```
+
+is used for `%d`, `%i`, and `%c`.
+
+Hexadecimal values are printed recursively using a base string:
+
+```text
+0123456789abcdef
+```
+
+or:
+
+```text
+0123456789ABCDEF
+```
+
+Pointers are printed as hexadecimal addresses with the `0x` prefix.
+
+Finally:
+
+```c
+va_end(args);
+```
+
+is used to finish processing the variadic arguments.
+
+## Resources
+
+Resources used while working on the project:
+
+- C standard library documentation for `printf`
+- Documentation for `<stdarg.h>`
+- `man 3 printf`
+- `man 3 stdarg`
+- 42 project subject
+
+### AI usage
+
+AI was used as a learning assistant during the project.
+
+It was used to:
+- explain how `va_list`, `va_start`, `va_arg`, and `va_end` work;
+- discuss the structure of the format parser;
+- explain hexadecimal conversion and pointer output;
+- help identify compilation and linker errors;
+- help design additional tests.
+
+The implementation itself was written and reviewed by the student.
