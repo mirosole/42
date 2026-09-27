@@ -1,40 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_controls_rotate.c                            :+:      :+:    :+:   */
+/*   compute_disorder.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/17 13:20:00 by pedved            #+#    #+#             */
-/*   Updated: 2026/09/27 15:02:47 by olmirosh         ###   ########.fr       */
+/*   Created: 2026/09/18 13:28:47 by pedved            #+#    #+#             */
+/*   Updated: 2026/09/27 15:52:51 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
-#include "stack.h"
-
-void	ra(t_stack *a)
+double compute_disorder(t_stack *s)
 {
-	if (!a || a->size < 2)
-		return ;
-	rotate(a);
-	write(1, "ra\n", 3);
-}
+	// a formula to calculate all possible pairs
+	
+	if(!s || !s->top || s->size <=1)
+		return (0.0);
+	double pairs = (s->size * (s->size - 1)) / 2;
+	
+	
+	double mistakes = 0; 
 
-void	rb(t_stack *b)
-{
-	if (!b || b->size < 2)
-		return ;
-	rotate(b);
-	write(1, "rb\n", 3);
-}
-
-void	rr(t_stack *a, t_stack *b)
-{
-	if ((!a || a->size < 2) && (!b || b->size < 2))
-		return ;
-	rotate(a);
-	rotate(b);
-	write(1, "rr\n", 3);
+	t_list *i = s->top;
+	t_list *j;
+	
+	while (i)
+	{
+		j = i->next;  
+		while (j)
+		{
+		if(*(int *)i->content > *(int *)j->content)
+			mistakes++; 
+		j = j->next; 
+		}
+		i = i->next; 
+	}
+	return (mistakes / pairs); 
 }

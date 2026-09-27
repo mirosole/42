@@ -3,25 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   sort_simple.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mirosole <mirosole@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/27 11:12:37 by mirosole          #+#    #+#             */
-/*   Updated: 2026/09/27 11:12:40 by mirosole         ###   ########.fr       */
+/*   Created: 2026/09/27 16:10:46 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/27 18:36:42 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stack.h"
 
+size_t	find_min_position(t_stack *a)
+{
+	t_list	*current;
+	int current_value;
+	int	min_value;
+	size_t	position;
+	size_t	min_position;
+
+	position = 0;
+	min_position = 0;
+	current = a->top;
+	min_value = *(int *)a->top->content;
+	while (current)
+	{
+		current_value = *(int *)current->content;
+		if (current_value < min_value)
+		{
+			min_value = *(int *)current->content;
+			min_position = position;
+		}
+		current = current->next;
+		position++;
+	}
+	return (min_position);
+}
+
+void	move_min_to_top(t_stack	*a, size_t	min_position)
+{
+	size_t	rotate_cost = min_position;
+	size_t	reverse_rotate_cost = a->size - min_position;
+	size_t	count;
+
+	count = 0;
+	if(rotate_cost <= reverse_rotate_cost)
+	{
+		while (count < rotate_cost)
+		{
+			ra(a);
+			count++;
+		}
+	}
+	else
+	{
+		while (count < reverse_rotate_cost)
+		{
+			rra(a);
+			count++;
+		}	
+	}	
+}
 int	sort_simple(t_stack *a, t_stack *b)
 {
-	size_t	pos;
+	size_t	min_position;
 
-	if (!a || a->size < 2 || stack_is_sorted(a))
-		return (1);
 	while (a->size > 0)
 	{
-		pos = find_min_pos(a);
-		rotate_a_to(a, pos);
+		min_position = find_min_position(a);
+		move_min_to_top(a, min_position);
 		pb(a, b);
 	}
 	while (b->size > 0)

@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_controls_rotate.c                            :+:      :+:    :+:   */
+/*   ft_print_hex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/17 13:20:00 by pedved            #+#    #+#             */
-/*   Updated: 2026/09/27 15:02:47 by olmirosh         ###   ########.fr       */
+/*   Created: 2026/09/15 15:04:48 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/15 15:09:34 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "ft_printf.h"
 
-#include "stack.h"
-
-void	ra(t_stack *a)
+int	ft_print_hex(unsigned long n, const char *base)
 {
-	if (!a || a->size < 2)
-		return ;
-	rotate(a);
-	write(1, "ra\n", 3);
+	int	len;
+
+	len = 0;
+	if (n >= 16)
+		len += ft_print_hex(n / 16, base);
+	ft_putchar_fd(base[n % 16], 1);
+	len++;
+	return (len);
 }
 
-void	rb(t_stack *b)
+int	ft_print_pointer(void *ptr)
 {
-	if (!b || b->size < 2)
-		return ;
-	rotate(b);
-	write(1, "rb\n", 3);
-}
+	int	len;
 
-void	rr(t_stack *a, t_stack *b)
-{
-	if ((!a || a->size < 2) && (!b || b->size < 2))
-		return ;
-	rotate(a);
-	rotate(b);
-	write(1, "rr\n", 3);
+	if (!ptr)
+		return (ft_print_str("(nil)"));
+	len = 0;
+	len += ft_print_str("0x");
+	len += ft_print_hex((unsigned long)ptr,
+			"0123456789abcdef");
+	return (len);
 }

@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_controls_rotate.c                            :+:      :+:    :+:   */
+/*   ft_print_text.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/17 13:20:00 by pedved            #+#    #+#             */
-/*   Updated: 2026/09/27 15:02:47 by olmirosh         ###   ########.fr       */
+/*   Created: 2026/09/15 15:04:21 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/15 15:09:23 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "ft_printf.h"
 
-#include "stack.h"
-
-void	ra(t_stack *a)
+int	ft_print_char(char c)
 {
-	if (!a || a->size < 2)
-		return ;
-	rotate(a);
-	write(1, "ra\n", 3);
+	ft_putchar_fd(c, 1);
+	return (1);
 }
 
-void	rb(t_stack *b)
+int	ft_print_str(char *s)
 {
-	if (!b || b->size < 2)
-		return ;
-	rotate(b);
-	write(1, "rb\n", 3);
-}
+	int	len;
 
-void	rr(t_stack *a, t_stack *b)
-{
-	if ((!a || a->size < 2) && (!b || b->size < 2))
-		return ;
-	rotate(a);
-	rotate(b);
-	write(1, "rr\n", 3);
+	if (!s)
+		s = "(null)";
+	len = ft_strlen(s);
+	ft_putstr_fd(s, 1);
+	return (len);
 }
