@@ -61,12 +61,16 @@ all:$(NAME)
 $(NAME) : $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
 
+%.o: %.c libft.h Makefile
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	$(RM) $(OBJS)
 
 fclean:	clean
 	$(RM) $(NAME)
 
-re: fclean all
+re: fclean
+	$(MAKE) all
 
 .PHONY:  all clean fclean re

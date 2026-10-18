@@ -1,35 +1,54 @@
-#include "stack.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/27 15:07:44 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/27 15:07:45 by olmirosh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	set_strategy(char *arg, t_config *config)
+#include "push_swap.h"
+
+/* Compare the terminator too, so a flag with extra trailing text is invalid. */
+static t_strategy	parse_strategy(char *arg)
 {
-	if (ft_strncmp(arg, "--simple", 9) == 0)
-		config->strategy = STRATEGY_SIMPLE;
-	else if (ft_strncmp(arg, "--medium", 9) == 0)
-		config->strategy = STRATEGY_MEDIUM;
-	else if (ft_strncmp(arg, "--complex", 10) == 0)
-		config->strategy = STRATEGY_COMPLEX;
-	else if (ft_strncmp(arg, "--adaptive", 11) == 0)
-		config->strategy = STRATEGY_ADAPTIVE;
-	else
-		return (0);
-	config->strategy_set = 1;
-	return (1);
+	if (ft_strncmp(arg, "--simple", ft_strlen("--simple") + 1) == 0)
+		return (STRATEGY_SIMPLE);
+	if (ft_strncmp(arg, "--medium", ft_strlen("--medium") + 1) == 0)
+		return (STRATEGY_MEDIUM);
+	if (ft_strncmp(arg, "--complex", ft_strlen("--complex") + 1) == 0)
+		return (STRATEGY_COMPLEX);
+	if (ft_strncmp(arg, "--adaptive", ft_strlen("--adaptive") + 1) == 0)
+		return (STRATEGY_ADAPTIVE);
+	return (STRATEGY_INVALID);
 }
 
+/* Allow one strategy and one --bench flag; reject repeats and unknown flags. */
 static int	parse_flag(char *arg, t_config *config)
 {
-	if (ft_strncmp(arg, "--bench", 8) == 0)
+	t_strategy	strategy;
+
+	if (ft_strncmp(arg, "--bench", ft_strlen("--bench") + 1) == 0)
 	{
-		if (config->bench)
-			return (0);
-		config->bench = 1;
-		return (1);
+		if (config->bench_enabled)
+			return (FAILURE);
+		config->bench_enabled = true;
+		return (SUCCESS);
 	}
 	if (config->strategy_set)
-		return (0);
-	return (set_strategy(arg, config));
+		return (FAILURE);
+	strategy = parse_strategy(arg);
+	if (strategy == STRATEGY_INVALID)
+		return (FAILURE);
+	config->strategy = strategy;
+	config->strategy_set = true;
+	return (SUCCESS);
 }
 
+/* Read backwards because each number is pushed onto the top of A. */
 int	parse_arguments(int argc, char **argv,
 		t_stack *a, t_config *config)
 {
@@ -42,18 +61,18 @@ int	parse_arguments(int argc, char **argv,
 		if (argv[i][0] == '-' && argv[i][1] == '-')
 		{
 			if (!parse_flag(argv[i], config))
-				return (0);
+				return (FAILURE);
 		}
 		else
 		{
 			if (!parse_int(argv[i], &number))
-				return (0);
+				return (FAILURE);
 			if (has_duplicate(a, number) || !add_number(a, number))
-				return (0);
+				return (FAILURE);
 		}
 		i--;
 	}
 	if (a->size == 0)
-		return (0);
-	return (1);
+		return (FAILURE);
+	return (SUCCESS);
 }

@@ -1,50 +1,57 @@
-NAME		:= push_swap
+NAME := push_swap
 
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror
+CC := cc
+CFLAGS := -Wall -Wextra -Werror
+CPPFLAGS := -I. -Ilibft
 
-LIBFT_DIR	:= libft
-LIBFT		:= $(LIBFT_DIR)/libft.a
+LIBFT_DIR := libft
+LIBFT := $(LIBFT_DIR)/libft.a
+LIBFT_SRCS := $(wildcard $(LIBFT_DIR)/*.c)
+HEADERS := push_swap.h $(LIBFT_DIR)/libft.h
 
-PRINTF_DIR	:= ft_printf
-PRINTF		:= $(PRINTF_DIR)/libftprintf.a
+SRCS := main.c \
+	benchmark.c \
+	parser.c \
+	parse_number.c \
+	parser_stack.c \
+	stack.c \
+	stack_operations.c \
+	push.c \
+	swap.c \
+	rotate.c \
+	reverse_rotate.c \
+	strategy.c \
+	sort_small.c \
+	sort_simple.c \
+	sort_medium.c \
+	sort_medium_chunks.c \
+	sort_complex.c \
+	merge_sort.c \
+	rank.c \
+	compute_disorder.c
 
-INCLUDES	:= -I. -I$(LIBFT_DIR) -I$(PRINTF_DIR)
+OBJS := $(SRCS:.c=.o)
 
-SRCS		:= $(wildcard *.c)
-OBJS		:= $(SRCS:.c=.o)
-
-TEST_BIN		:= tests/test_stack
-SORT_TEST_BIN		:= tests/test_sort_o2
-FULL_SORT_TEST_BIN	:= tests/test_sort_full
-
-.PHONY: all clean fclean re test test-sort-o2 test-sort-full
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(PRINTF)
-	$(CC) $(CFLAGS) $(OBJS) $(PRINTF) $(LIBFT) -o $@
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+%.o: %.c $(HEADERS) Makefile
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-$(LIBFT):
+$(LIBFT): $(LIBFT_SRCS) $(LIBFT_DIR)/libft.h $(LIBFT_DIR)/Makefile
 	$(MAKE) -C $(LIBFT_DIR)
-
-$(PRINTF):
-	$(MAKE) -C $(PRINTF_DIR)
 
 clean:
 	rm -f $(OBJS)
-	rm -f $(TEST_BIN)
-	rm -f $(SORT_TEST_BIN)
-	rm -f $(FULL_SORT_TEST_BIN)
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(PRINTF_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(MAKE) -C $(PRINTF_DIR) fclean
 
-re: fclean all
+re: fclean
+	$(MAKE) all

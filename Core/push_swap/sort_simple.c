@@ -5,74 +5,68 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/27 16:10:46 by olmirosh          #+#    #+#             */
-/*   Updated: 2026/09/27 18:36:42 by olmirosh         ###   ########.fr       */
+/*   Created: 2026/10/18 15:00:00 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/10/18 16:29:01 by olmirosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stack.h"
+#include "push_swap.h"
 
-size_t	find_min_position(t_stack *a)
+#define SIMPLE_CHUNK_SIZE 20
+
+static size_t	find_max_position(t_stack *b)
 {
 	t_list	*current;
-	int current_value;
-	int	min_value;
 	size_t	position;
-	size_t	min_position;
+	size_t	max_position;
+	int		max_value;
 
+	current = b->top;
 	position = 0;
-	min_position = 0;
-	current = a->top;
-	min_value = *(int *)a->top->content;
+	max_position = 0;
+	max_value = *(int *)current->content;
 	while (current)
 	{
-		current_value = *(int *)current->content;
-		if (current_value < min_value)
+		if (*(int *)current->content > max_value)
 		{
-			min_value = *(int *)current->content;
-			min_position = position;
+			max_value = *(int *)current->content;
+			max_position = position;
 		}
 		current = current->next;
 		position++;
 	}
-	return (min_position);
+	return (max_position);
 }
 
-void	move_min_to_top(t_stack	*a, size_t	min_position)
+static void	move_max_to_top(t_stack *b, size_t position)
 {
-	size_t	rotate_cost = min_position;
-	size_t	reverse_rotate_cost = a->size - min_position;
 	size_t	count;
 
-	count = 0;
-	if(rotate_cost <= reverse_rotate_cost)
+	if (position <= b->size / 2)
 	{
-		while (count < rotate_cost)
-		{
-			ra(a);
-			count++;
-		}
+		count = position;
+		while (count-- > 0)
+			rb(b);
 	}
 	else
 	{
-		while (count < reverse_rotate_cost)
-		{
-			rra(a);
-			count++;
-		}	
-	}	
+		count = b->size - position;
+		while (count-- > 0)
+			rrb(b);
+	}
 }
+
 int	sort_simple(t_stack *a, t_stack *b)
 {
-	size_t	min_position;
-
-	while (a->size > 0)
-	{
-		min_position = find_min_position(a);
-		move_min_to_top(a, min_position);
-		pb(a, b);
-	}
+	if (!a || !b || a->size < 2)
+		return (SUCCESS);
+	if (!rank_stack(a))
+		return (FAILURE);
+	distribute_chunks(a, b, SIMPLE_CHUNK_SIZE);
 	while (b->size > 0)
+	{
+		move_max_to_top(b, find_max_position(b));
 		pa(a, b);
-	return (1);
+	}
+	return (SUCCESS);
 }

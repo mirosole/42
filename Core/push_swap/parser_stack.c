@@ -1,4 +1,16 @@
-#include "stack.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_stack.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olmirosh <olmirosh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/27 15:07:44 by olmirosh          #+#    #+#             */
+/*   Updated: 2026/09/27 15:07:45 by olmirosh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "push_swap.h"
 
 int	has_duplicate(t_stack *a, int number)
 {
@@ -8,12 +20,13 @@ int	has_duplicate(t_stack *a, int number)
 	while (current)
 	{
 		if (*(int *)current->content == number)
-			return (1);
+			return (true);
 		current = current->next;
 	}
-	return (0);
+	return (false);
 }
 
+/* Allocate value and node; release the value if node allocation fails. */
 int	add_number(t_stack *a, int number)
 {
 	int		*value;
@@ -21,16 +34,16 @@ int	add_number(t_stack *a, int number)
 
 	value = malloc(sizeof(int));
 	if (!value)
-		return (0);
+		return (FAILURE);
 	*value = number;
 	node = ft_lstnew(value);
 	if (!node)
 	{
 		free(value);
-		return (0);
+		return (FAILURE);
 	}
 	node->next = a->top;
 	a->top = node;
 	a->size++;
-	return (1);
+	return (SUCCESS);
 }
