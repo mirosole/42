@@ -30,6 +30,7 @@ def test_ft_exercise(exercise_file_name):
         # Import your exercise file
         # This is like doing: import ft_plot_area
         import sys
+
         sys.path.append(".")
         ft_module = __import__(exercise_file_name)
 
@@ -56,10 +57,8 @@ def test_ft_exercise(exercise_file_name):
 
     except ImportError:
         print(f"❌ Could not find {exercise_file_name}.py")
-        print(
-            """   Make sure your file exists and is in the same
-            folder as main.py"""
-        )
+        print("""   Make sure your file exists and is in the same
+            folder as main.py""")
 
     except AttributeError:
         print(f"❌ Could not find function {exercise_file_name}() in your file")
@@ -70,10 +69,8 @@ def test_ft_exercise(exercise_file_name):
         print(f"❌ Type error: {error}")
         if exercise_file_name == "ft_seed_inventory":
             if "missing" in msg and "required positional argument" in msg:
-                print(
-                    """   For exercise 7, make sure your
-                    function takes parameters:"""
-                )
+                print("""   For exercise 7, make sure your
+                    function takes parameters:""")
                 print(
                     f"   def {exercise_file_name}"
                     "(seed_type: str, quantity: int, unit: str) -> None:"
